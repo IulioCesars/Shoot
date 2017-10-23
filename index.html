@@ -8,8 +8,11 @@
 	</head>
 	<body>
 		<script src="js/three.js"></script>
-		<script src="js/OBJLoader.js"></script>	
+		<script src="js/OBJLoader.js"></script>			
+		<script src="js/MTLLoader.js"></script>	
 		<script src="modelos/pelota.js"></script>
+		<script src="modelos/simpleObj.js"></script>
+
 
 		<script>
 			var scene = new THREE.Scene();
@@ -48,18 +51,8 @@
 				renderer.render( scene, camera );
 			};
 
-			var loader = new THREE.OBJLoader();
-
-			// load a resource
-			loader.load(
-				// resource URL
-				'modelos/Pato/Duck.obj',
-				// Function when resource is loaded
-				function ( object ) {
-					scene.add( object );
-				}
-			);
-
+			
+			var modelo = new simpleObj("modelos/Pollo/","Chicken", scene);
 
 			window.addEventListener( 'resize', function () {
 				camera.aspect = window.innerWidth / window.innerHeight;
