@@ -1,0 +1,99 @@
+<html>
+	<head>
+		<title></title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="js/Three.min.js"></script>
+		<script src="js/OBJLoader.js"></script>			
+		<script src="js/MTLLoader.js"></script>
+		<script src="js/ammo.js"></script>
+		<script src="modelos/pelota.js"></script>
+		<script src="modelos/simpleObj.js"></script>
+
+
+		<script>
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 50 );
+			camera.position.z = 30;
+			camera.position.y = 10;
+
+			var renderer = new THREE.WebGLRenderer( { antialias: true } );
+			renderer.setPixelRatio( window.devicePixelRatio );
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.setClearColor( 0x000000, 1 );
+			document.body.appendChild( renderer.domElement );
+			var lights = [];
+			lights[ 0 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+			lights[ 1 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+			lights[ 2 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+			lights[ 0 ].position.set( 0, 200, 0 );
+			lights[ 1 ].position.set( 100, 200, 100 );
+			lights[ 2 ].position.set( - 100, - 200, - 100 );
+			scene.add( lights[ 0 ] );
+			scene.add( lights[ 1 ] );
+			scene.add( lights[ 2 ] );
+
+			var raycaster = new THREE.Raycaster();
+			var mouseCoords = new THREE.Vector2();
+
+			var gridHelper = new THREE.GridHelper( 20, 20 );
+			scene.add( gridHelper );
+
+			var modelo = new simpleObj(scene, "modelos/Pato/","Duck", "Pato", 5);
+			
+			var p = new pelota();
+			p.position.y = 10;
+			scene.add(p);
+
+			var render = function () {
+				requestAnimationFrame( render );
+
+				var pato = scene.getObjectByName("Pato");
+				if(pato != null){
+					pato.rotation.y += THREE.Math.degToRad(1);
+				}
+
+
+				renderer.render( scene, camera );
+			};
+
+			window.addEventListener( 'resize', function () {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}, false );
+			window.addEventListener( 'mousedown', function( event ) {
+				var pos = new THREE.Vector3();
+				var quat = new THREE.Quaternion();
+				mouseCoords.set(
+					( event.clientX / window.innerWidth ) * 2 - 1,
+					- ( event.clientY / window.innerHeight ) * 2 + 1
+				);
+				//Obtiene las cordenadas del mouse
+				raycaster.setFromCamera( mouseCoords, camera );
+				//Lo convierte a conrdenadas de la scene
+
+				var ballMass = 35;
+				var ballRadius = 0.4;
+				var ballMaterial = new THREE.MeshPhongMaterial( { color: 0x202020 } );
+				var ball = new THREE.Mesh( new THREE.SphereGeometry( ballRadius, 14, 10 ), ballMaterial );
+				ball.castShadow = true;
+				ball.receiveShadow = true;
+				var ballShape = new Ammo.btSphereShape( ballRadius );
+				ballShape.setMargin( 0.05 );
+				pos.copy( raycaster.ray.direction );
+				pos.add( raycaster.ray.origin );
+				quat.set( 0, 0, 0, 1 );
+				var ballBody = createRigidBody( ball, ballShape, ballMass, pos, quat );
+				pos.copy( raycaster.ray.direction );
+				pos.multiplyScalar( 24 );
+				ballBody.setLinearVelocity( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
+			}, false);
+			render();
+		</script>
+	</body>
+</html>
