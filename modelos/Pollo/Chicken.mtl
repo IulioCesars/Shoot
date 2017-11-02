@@ -12,7 +12,5 @@ newmtl 08___Default
 	Kd 0.588235 0.588235 0.588235
 	Ks 0.000000 0.000000 0.000000
 	Ke 0.000000 0.000000 0.000000
-	map_Ka C:\Users\Admin\Documents\3dsMax\export\Chicken\Chicken_texture.jpg
-	map_Kd C:\Users\Admin\Documents\3dsMax\export\Chicken\Chicken_texture.jpg
-	map_Ks C:\Users\Admin\Documents\3dsMax\export\Chicken\Line001SpecularMap.jpg
-	map_bump -bm 0.700000 Map__5_Normal_Bump.tga
+	map_Ka Chicken_texture.jpg
+	map_Kd Chicken_texture.jpg

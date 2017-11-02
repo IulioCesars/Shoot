@@ -7,59 +7,17 @@
 		</style>
 	</head>
 	<body>
-		<script src="js/three.js"></script>
+		<script src="js/three.min.js"></script>
 		<script src="js/OBJLoader.js"></script>			
-		<script src="js/MTLLoader.js"></script>	
-		<script src="modelos/pelota.js"></script>
-		<script src="modelos/simpleObj.js"></script>
-
-
-		<script>
-			var scene = new THREE.Scene();
-			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 50 );
-			camera.position.z = 30;
-			camera.position.y = 10;
-
-
-			var renderer = new THREE.WebGLRenderer( { antialias: true } );
-			renderer.setPixelRatio( window.devicePixelRatio );
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			renderer.setClearColor( 0x000000, 1 );
-			document.body.appendChild( renderer.domElement );
-			var lights = [];
-			lights[ 0 ] = new THREE.PointLight( 0xffffff, 1, 0 );
-			lights[ 1 ] = new THREE.PointLight( 0xffffff, 1, 0 );
-			lights[ 2 ] = new THREE.PointLight( 0xffffff, 1, 0 );
-			lights[ 0 ].position.set( 0, 200, 0 );
-			lights[ 1 ].position.set( 100, 200, 100 );
-			lights[ 2 ].position.set( - 100, - 200, - 100 );
-			scene.add( lights[ 0 ] );
-			scene.add( lights[ 1 ] );
-			scene.add( lights[ 2 ] );
-			var gridHelper = new THREE.GridHelper( 20, 20 );
-			scene.add( gridHelper );
-
-
-
-			var _pelota = new pelota();
-			//scene.add( _pelota );
-
-			var render = function () {
-				requestAnimationFrame( render );
-				
-				
-				renderer.render( scene, camera );
-			};
-
-			
-			var modelo = new simpleObj("modelos/Pollo/","Chicken", scene);
-
-			window.addEventListener( 'resize', function () {
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
-				renderer.setSize( window.innerWidth, window.innerHeight );
-			}, false );
-			render();
+		<script src="js/MTLLoader.js"></script>
+		<script src="js/ammo.js"></script>
+		<script src="modelos/Pelota.js"></script>
+		<script src="modelos/Fila.js"></script>
+		<script src="main.js"></script>
+		<script type="text/javascript">
+			IniciarGraficos();
+			CargarEscenario();
+			Render();
 		</script>
 	</body>
 </html>
