@@ -4,20 +4,26 @@ var camera;
 var renderer;
 var lights = [];
 var raycaster;
-var mouseCoords;
+var raycasterCol;
 
+var mouseCoords;
+var clock;
+var delta;
 
 var _pelota;
+var pelotas = [];
 var estantes = [];
+var objetosColision = [];
 
 function IniciarGraficos(){
 	scene = new THREE.Scene();
 	sceneModelos = new THREE.Scene();
+	clock = new THREE.Clock();
 	grupoObj = [];
 
 	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 50 );
 		camera.position.z = 10;
-		camera.position.y = 5;
+		camera.position.y = 4;
 
 	renderer = new THREE.WebGLRenderer( { antialias: true } );
 		renderer.setPixelRatio( window.devicePixelRatio );
@@ -37,6 +43,7 @@ function IniciarGraficos(){
 	scene.add( lights[ 2 ] );
 
 	raycaster = new THREE.Raycaster();
+	raycasterCol = new THREE.Raycaster();
 	mouseCoords = new THREE.Vector2();
 }
 
@@ -53,12 +60,34 @@ function CargarEscenario(){
 
 	estantes.push(new Fila(sceneModelos, scene, { x: 0, y: 6, z: 0 }));
 	estantes.push(new Fila(sceneModelos, scene, { x: 0, y: 3, z: 0 }, "izq"));
-	estantes.push(new Fila(sceneModelos, scene));
+	estantes.push(new Fila(sceneModelos, scene, { x: 0, y: 0, z: 0 },));
 }
 
 var Render = function () {
 	requestAnimationFrame( Render );
-	estantes.forEach(it=>{ it.dibujar(); })
+	delta = clock.getDelta();
+
+	estantes.forEach(it=>{ it.dibujar(delta); })
+	//Ya jala pero deberia hacerlo al mismo tiempo de que se mueven,
+	//PENDIENTE: agregarlo como metodo a fila
+	pelotas.forEach(pelota=>{
+		pelota.rays.forEach(ray => {
+			// "Lanzamos" rayo por rayo
+
+			// 1Desde donde 2 Hacia donde
+
+			raycasterCol.set(pelota.position, ray);
+
+			// Verifica si hay colision; el segundo parametro es para detectar todos los modelos; hacer algoritmos para colisiones SOLAMENTE con objetos cercanos
+			var collision =  raycasterCol.intersectObjects(objetosColision, true);
+
+			if (collision.length > 0 && collision[0].distance <1 ) {
+				// Si existe colision
+				scene.remove(collision[0].object.parent);
+				console.log("Si hay colision!!!!!!!!!");
+			}
+		});
+	});
 
 	renderer.render( scene, camera );
 };
@@ -125,7 +154,18 @@ window.addEventListener( 'click', function( event ) {
 	var p = _pelota.clone();
 	p.position.copy(pos);
 	p.quaternion.copy(quat);
-	p.scale.x = p.scale.y = p.scale.z = 0.1;
-	scene.add(p);
-
+	p.scale.x = p.scale.y = p.scale.z = 0.5;
+	p.position.z =0;
+	p.rays = [
+		new THREE.Vector3(1.5,0,0),
+		new THREE.Vector3(-1.5,0,0),
+		new THREE.Vector3(0,0,1.5),
+		new THREE.Vector3(0,0,-1.5)
+	];
+	pelotas.push(p);
+	scene.add(pelotas[pelotas.length - 1]);
+	if(pelotas.length >= 10){
+		scene.remove(pelotas[0]);
+		pelotas.shift();
+	}
 }, false);
