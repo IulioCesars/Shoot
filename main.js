@@ -4,7 +4,6 @@ var camera;
 var renderer;
 var lights = [];
 var raycaster;
-var raycasterCol;
 
 var mouseCoords;
 var clock;
@@ -43,7 +42,6 @@ function IniciarGraficos(){
 	scene.add( lights[ 2 ] );
 
 	raycaster = new THREE.Raycaster();
-	raycasterCol = new THREE.Raycaster();
 	mouseCoords = new THREE.Vector2();
 }
 
@@ -67,27 +65,9 @@ var Render = function () {
 	requestAnimationFrame( Render );
 	delta = clock.getDelta();
 
-	estantes.forEach(it=>{ it.dibujar(delta); })
+	estantes.forEach(it=>{ it.dibujar(delta, pelotas); })
 	//Ya jala pero deberia hacerlo al mismo tiempo de que se mueven,
 	//PENDIENTE: agregarlo como metodo a fila
-	pelotas.forEach(pelota=>{
-		pelota.rays.forEach(ray => {
-			// "Lanzamos" rayo por rayo
-
-			// 1Desde donde 2 Hacia donde
-
-			raycasterCol.set(pelota.position, ray);
-
-			// Verifica si hay colision; el segundo parametro es para detectar todos los modelos; hacer algoritmos para colisiones SOLAMENTE con objetos cercanos
-			var collision =  raycasterCol.intersectObjects(objetosColision, true);
-
-			if (collision.length > 0 && collision[0].distance <1 ) {
-				// Si existe colision
-				scene.remove(collision[0].object.parent);
-				console.log("Si hay colision!!!!!!!!!");
-			}
-		});
-	});
 
 	renderer.render( scene, camera );
 };
@@ -157,10 +137,10 @@ window.addEventListener( 'click', function( event ) {
 	p.scale.x = p.scale.y = p.scale.z = 0.5;
 	p.position.z =0;
 	p.rays = [
-		new THREE.Vector3(1.5,0,0),
-		new THREE.Vector3(-1.5,0,0),
-		new THREE.Vector3(0,0,1.5),
-		new THREE.Vector3(0,0,-1.5)
+		new THREE.Vector3(2,0,0),
+		new THREE.Vector3(2,0,0),
+		new THREE.Vector3(0,0,2),
+		new THREE.Vector3(0,0,-2)
 	];
 	pelotas.push(p);
 	scene.add(pelotas[pelotas.length - 1]);

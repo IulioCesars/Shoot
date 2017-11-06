@@ -11,6 +11,7 @@ class Fila{
         this.limite = 10;
         this.direccion = _direccion;
 
+        this.raycasterCol =  new THREE.Raycaster();
         this.velocidad = this.direccion == "der" ? 4 : -4;
         this.inicio = this.direccion == "der" ? 10 : -10;
 
@@ -33,7 +34,8 @@ class Fila{
 
     }
 
-    dibujar(delta){
+    dibujar(delta, pelotas){
+        //Agrega modelos
         if(this.grupo.length<this.limite){
             if(this.agregar){
             var model = this.obtenerModelo();
@@ -42,14 +44,12 @@ class Fila{
                     this.grupo[this.grupo.length -1].position.x = -this.inicio;
                     this.grupo[this.grupo.length -1].position.y = this.posicion.y;
                     this.grupo[this.grupo.length -1].position.z = this.posicion.z;
-
                     this.scene.add(this.grupo[this.grupo.length -1]);
-                    objetosColision.push(this.grupo[this.grupo.length -1]);
-                    //Aqui debo agregar los objetos a colicion
                     this.agregar = false;
                 }
             }
         }
+        Mueve los modelos
         this.grupo.forEach((it)=>{
             it.position.x += this.velocidad * delta;
             if(this.direccion == "der"){
@@ -65,6 +65,7 @@ class Fila{
             }
 
         });
+        //Elimina los modelos
         if(this.grupo[this.grupo.length -1]!=null){
             if(this.direccion == "der"){
                 if(this.grupo[this.grupo.length -1].position.x > (-this.inicio + (this.inicio / this.limite) * 2 )){
@@ -76,6 +77,24 @@ class Fila{
                 }
             } 
         }
+        //Compruba Coliciones
+        pelotas.forEach(pelota=>{
+            pelota.rays.forEach(ray => {
+                // "Lanzamos" rayo por rayo
+
+                // 1Desde donde 2 Hacia donde
+
+                this.raycasterCol.set(pelota.position, ray);
+
+                // Verifica si hay colision; el segundo parametro es para detectar todos los modelos; hacer algoritmos para colisiones SOLAMENTE con objetos cercanos
+                var collision =  this.raycasterCol.intersectObjects(grupo, true);
+
+                if (collision.length > 0 && collision[0].distance <1 ) {
+                    // Si existe colision
+                    this.scene.remove(collision[0].object.parent);
+                }
+            });
+        });
     }
 
     obtenerModelo(i = 0){
