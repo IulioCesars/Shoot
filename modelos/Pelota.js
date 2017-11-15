@@ -9,5 +9,14 @@ class Pelota extends THREE.Mesh{
     this.castShadow = true;
     this.receiveShadow = false;
     this.scale.x = this.scale.y = this.scale.z = 0.1;
+    this.direccion= new THREE.Vector3();
+  }
+
+  dibujar(delta){
+    this.position.z -= (8 * delta);
+
+    //if(this.position.x > this.direccion.x){
+      //this.position.x -= (8 * delta);
+    //  }
   }
 }

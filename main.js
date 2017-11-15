@@ -4,7 +4,6 @@ var camera;
 var renderer;
 var lights = [];
 var raycaster;
-var raycasterCol;
 
 var mouseCoords;
 var clock;
@@ -15,6 +14,7 @@ var pelotas = [];
 var estantes = [];
 var objetosColision = [];
 
+var pause = false;
 function IniciarGraficos(){
 	scene = new THREE.Scene();
 	sceneModelos = new THREE.Scene();
@@ -43,7 +43,6 @@ function IniciarGraficos(){
 	scene.add( lights[ 2 ] );
 
 	raycaster = new THREE.Raycaster();
-	raycasterCol = new THREE.Raycaster();
 	mouseCoords = new THREE.Vector2();
 }
 
@@ -67,29 +66,12 @@ var Render = function () {
 	requestAnimationFrame( Render );
 	delta = clock.getDelta();
 
-	estantes.forEach(it=>{ it.dibujar(delta); })
-	//Ya jala pero deberia hacerlo al mismo tiempo de que se mueven,
-	//PENDIENTE: agregarlo como metodo a fila
-	pelotas.forEach(pelota=>{
-		pelota.rays.forEach(ray => {
-			// "Lanzamos" rayo por rayo
+	if(!pause){
+		estantes.forEach(it=>{ it.dibujar(delta, pelotas); });
+		pelotas.forEach(it => { it.dibujar(delta); });
+		renderer.render( scene, camera );
 
-			// 1Desde donde 2 Hacia donde
-
-			raycasterCol.set(pelota.position, ray);
-
-			// Verifica si hay colision; el segundo parametro es para detectar todos los modelos; hacer algoritmos para colisiones SOLAMENTE con objetos cercanos
-			var collision =  raycasterCol.intersectObjects(objetosColision, true);
-
-			if (collision.length > 0 && collision[0].distance <1 ) {
-				// Si existe colision
-				scene.remove(collision[0].object.parent);
-				console.log("Si hay colision!!!!!!!!!");
-			}
-		});
-	});
-
-	renderer.render( scene, camera );
+	}
 };
 
 
@@ -148,20 +130,32 @@ window.addEventListener( 'click', function( event ) {
 	//Lo convierte a conrdenadas de la scene
 	
 	pos.copy( raycaster.ray.direction );
+	console.clear();
+	//alert("x: " + pos.x + "y: " + pos.y + "z: " + pos.z);
+	console.log("Direccion: ");
+	console.log(raycaster.ray.direction);
+	console.log("Origen: ");
+	console.log( raycaster.ray.origin );
+
 	pos.add( raycaster.ray.origin );
+
+	console.log("Origen: ");
+	console.log( pos );
+	
 	quat.set( 0, 0, 0, 1 );
 
 	var p = _pelota.clone();
 	p.position.copy(pos);
 	p.quaternion.copy(quat);
 	p.scale.x = p.scale.y = p.scale.z = 0.5;
-	p.position.z =0;
+	//p.position.z =0;
 	p.rays = [
-		new THREE.Vector3(1.5,0,0),
-		new THREE.Vector3(-1.5,0,0),
-		new THREE.Vector3(0,0,1.5),
-		new THREE.Vector3(0,0,-1.5)
+		new THREE.Vector3(2,0,0),
+		new THREE.Vector3(1,0,0),
+		new THREE.Vector3(0,0,1),
+		new THREE.Vector3(0,0,-3)
 	];
+	p.direccion.copy(raycaster.ray.direction);
 	pelotas.push(p);
 	scene.add(pelotas[pelotas.length - 1]);
 	if(pelotas.length >= 10){
@@ -169,3 +163,9 @@ window.addEventListener( 'click', function( event ) {
 		pelotas.shift();
 	}
 }, false);
+
+window.addEventListener('keydown', function(event) {
+    if(event.keyCode == 32) {
+        pause = !pause;
+    }
+});

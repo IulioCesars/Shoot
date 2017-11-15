@@ -1,23 +1,31 @@
-<html>
-	<head>
-		<title></title>
-		<style>
-			body { margin: 0; }
-			canvas { width: 100%; height: 100% }
-		</style>
-	</head>
-	<body>
-		<script src="js/three.min.js"></script>
-		<script src="js/OBJLoader.js"></script>			
-		<script src="js/MTLLoader.js"></script>
-		<script src="js/ammo.js"></script>
-		<script src="modelos/Pelota.js"></script>
-		<script src="modelos/Fila.js"></script>
-		<script src="main.js"></script>
-		<script type="text/javascript">
-			IniciarGraficos();
-			CargarEscenario();
-			Render();
-		</script>
-	</body>
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Shoot</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="js/jquery.min.js"></script>
+</head>
+    <body id="page-top">
+        <header>
+            <div class="header-content">
+                <div class="header-content-inner">
+                    <img id="btnJugar" class="img-svg" src="img/Jugar.svg" alt="Jugar">
+                    <hr>
+                    <hr>
+                    <img id="btnPuntuaciones" class="img-svg" src="img/Puntuaciones.svg" alt="Puntuaciones">
+                </div>
+            </div>
+        </header>     
+    </body>
+    <script type="text/javascript">
+        $("#btnJugar").click(()=>{
+            window.location.href = "game.html";
+        });
+    </script>
 </html>
