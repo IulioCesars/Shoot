@@ -12,7 +12,10 @@ class Fila{
         this.direccion = _direccion;
 
         this.raycasterCol =  new THREE.Raycaster();
+<<<<<<< HEAD
         this.collision;
+=======
+>>>>>>> master
         this.velocidad = this.direccion == "der" ? 4 : -4;
         this.inicio = this.direccion == "der" ? 10 : -10;
 
@@ -50,7 +53,11 @@ class Fila{
                 }
             }
         }
+<<<<<<< HEAD
         //Mueve los modelos
+=======
+        Mueve los modelos
+>>>>>>> master
         this.grupo.forEach((it)=>{
             it.position.x += (this.velocidad * delta);
             if(this.direccion == "der"){
@@ -65,8 +72,12 @@ class Fila{
                 }
             }
         });
+<<<<<<< HEAD
         
 
+=======
+        //Elimina los modelos
+>>>>>>> master
         if(this.grupo[this.grupo.length -1]!=null){
             if(this.direccion == "der"){
                 if(this.grupo[this.grupo.length -1].position.x > (-this.inicio + (this.inicio / this.limite) * 2 )){
@@ -84,6 +95,7 @@ class Fila{
                 // "Lanzamos" rayo por rayo
 
                 // 1Desde donde 2 Hacia donde
+<<<<<<< HEAD
                 this.raycasterCol = new THREE.Raycaster();
                 this.raycasterCol.set(pelota.position, ray);
 
@@ -94,6 +106,17 @@ class Fila{
                 if (this.collision.length > 0 && this.collision[0].distance <2 ) {
                     // Si existe colision
                     this.scene.remove(this.collision[0].object.parent);
+=======
+
+                this.raycasterCol.set(pelota.position, ray);
+
+                // Verifica si hay colision; el segundo parametro es para detectar todos los modelos; hacer algoritmos para colisiones SOLAMENTE con objetos cercanos
+                var collision =  this.raycasterCol.intersectObjects(grupo, true);
+
+                if (collision.length > 0 && collision[0].distance <1 ) {
+                    // Si existe colision
+                    this.scene.remove(collision[0].object.parent);
+>>>>>>> master
                 }
             });
         });

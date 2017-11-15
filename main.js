@@ -66,12 +66,20 @@ var Render = function () {
 	requestAnimationFrame( Render );
 	delta = clock.getDelta();
 
+<<<<<<< HEAD
 	if(!pause){
 		estantes.forEach(it=>{ it.dibujar(delta, pelotas); });
 		pelotas.forEach(it => { it.dibujar(delta); });
 		renderer.render( scene, camera );
 
 	}
+=======
+	estantes.forEach(it=>{ it.dibujar(delta, pelotas); })
+	//Ya jala pero deberia hacerlo al mismo tiempo de que se mueven,
+	//PENDIENTE: agregarlo como metodo a fila
+
+	renderer.render( scene, camera );
+>>>>>>> master
 };
 
 
@@ -151,9 +159,15 @@ window.addEventListener( 'click', function( event ) {
 	//p.position.z =0;
 	p.rays = [
 		new THREE.Vector3(2,0,0),
+<<<<<<< HEAD
 		new THREE.Vector3(1,0,0),
 		new THREE.Vector3(0,0,1),
 		new THREE.Vector3(0,0,-3)
+=======
+		new THREE.Vector3(2,0,0),
+		new THREE.Vector3(0,0,2),
+		new THREE.Vector3(0,0,-2)
+>>>>>>> master
 	];
 	p.direccion.copy(raycaster.ray.direction);
 	pelotas.push(p);
