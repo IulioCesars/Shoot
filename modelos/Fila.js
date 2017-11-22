@@ -8,14 +8,11 @@ class Fila{
         this.posicion.x = _posicion != null ? _posicion.x : 0;
         this.posicion.y = _posicion != null ? _posicion.y : 0;
         this.posicion.z = _posicion != null ? _posicion.z : 0;
-        this.limite = 7;
+        this.limite = 10;
         this.direccion = _direccion;
 
         this.raycasterCol =  new THREE.Raycaster();
-<<<<<<< HEAD
         this.collision;
-=======
->>>>>>> master
         this.velocidad = this.direccion == "der" ? 4 : -4;
         this.inicio = this.direccion == "der" ? 10 : -10;
 
@@ -53,13 +50,9 @@ class Fila{
                 }
             }
         }
-<<<<<<< HEAD
         //Mueve los modelos
-=======
-        Mueve los modelos
->>>>>>> master
         this.grupo.forEach((it)=>{
-            it.position.x += (this.velocidad * delta);
+            it.position.x += this.velocidad * delta;
             if(this.direccion == "der"){
                 if(this.grupo.length==this.limite && it.position.x >= this.inicio){
                     this.scene.remove(it);
@@ -72,12 +65,8 @@ class Fila{
                 }
             }
         });
-<<<<<<< HEAD
         
 
-=======
-        //Elimina los modelos
->>>>>>> master
         if(this.grupo[this.grupo.length -1]!=null){
             if(this.direccion == "der"){
                 if(this.grupo[this.grupo.length -1].position.x > (-this.inicio + (this.inicio / this.limite) * 2 )){
@@ -95,7 +84,6 @@ class Fila{
                 // "Lanzamos" rayo por rayo
 
                 // 1Desde donde 2 Hacia donde
-<<<<<<< HEAD
                 this.raycasterCol = new THREE.Raycaster();
                 this.raycasterCol.set(pelota.position, ray);
 
@@ -105,18 +93,9 @@ class Fila{
 
                 if (this.collision.length > 0 && this.collision[0].distance <2 ) {
                     // Si existe colision
-                    this.scene.remove(this.collision[0].object.parent);
-=======
-
-                this.raycasterCol.set(pelota.position, ray);
-
-                // Verifica si hay colision; el segundo parametro es para detectar todos los modelos; hacer algoritmos para colisiones SOLAMENTE con objetos cercanos
-                var collision =  this.raycasterCol.intersectObjects(grupo, true);
-
-                if (collision.length > 0 && collision[0].distance <1 ) {
-                    // Si existe colision
-                    this.scene.remove(collision[0].object.parent);
->>>>>>> master
+                    var objColision = this.collision[0].object.parent;
+                    //if(model.objetivo)
+                        this.scene.remove(objColision);
                 }
             });
         });
@@ -133,7 +112,9 @@ class Fila{
             case 3: { nombreModelo = "Caja"; break; }
             case 4: { nombreModelo = "Pollo"; break; }
         }
-        return this.sceneModelos.getObjectByName(nombreModelo);
+        var model  = this.sceneModelos.getObjectByName(nombreModelo);
+        //model.objetivo = 1;
+        return model;
     }
 
     obtenerNumeroAleatorio(min, max) {

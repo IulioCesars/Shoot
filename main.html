@@ -1,22 +1,69 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Shoot</title>
-
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="css/style.css" rel="stylesheet">
-    <script src="js/jquery.min.js"></script>
-</head>
-    <body id="page-top">
-        <header>
-            <div class="header-content">
-        		
+﻿<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Shoot</title>
+        <style type="text/css">
+            body{
+                background-image: url('img/fondo.jpg');
+                background-position: center;
+                -o-background-size: cover;
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+            }
+            #contenido {
+                width: 800px;
+                height: 700px;
+                margin-right: auto;
+                margin-left: auto;
+                margin-top: 2%;
+            }
+            #contenido > div, #contenido > iframe {
+                width: 100%;
+            }
+            #juego {
+                height: 600px;
+            }
+            #interfaz {
+                position: relative;
+                height: 60px;
+            }
+            #interfaz > div {
+                position: absolute;
+                top: 10px;
+            }
+            #puntuacion {
+                left: 5px;
+            }
+            span{
+                border: 0px;
+            }
+            #estatus {
+                right: 5px;
+            }
+            .barra {
+                width: 200px;
+                height: 20px;
+                border: solid;
+            }
+        </style>
+        <script type="text/javascript">
+            function usoPelota() { 
+                var pelotas = document.getElementById('contador');
+                pelotas.innerHTML -= 1;
+            }
+        </script>
+    </head>
+    <body>
+        <div id="contenido">
+            <div id="interfaz">
+                <div id="estatus">
+                    <label>BALLS</label>
+                    <!--<div id="pelotas" class="barra">
+                        <span id="contador">10</span>
+                    </div>-->
+                </div>
             </div>
-        </header>     
-        <iframe src="game.html"></iframe>
+            <iframe id="juego" src="game.html"></iframe>
+        </div>
     </body>
 </html>

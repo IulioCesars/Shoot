@@ -13,8 +13,12 @@ var _pelota;
 var pelotas = [];
 var estantes = [];
 var objetosColision = [];
-
+var oportunidades = 10;
+var puntos = 0;
 var pause = false;
+var acerto = false;
+
+
 function IniciarGraficos(){
 	scene = new THREE.Scene();
 	sceneModelos = new THREE.Scene();
@@ -57,6 +61,11 @@ function CargarEscenario(){
 	var gridHelper = new THREE.GridHelper( 20, 20 );
 	scene.add( gridHelper );
 
+
+	//CargarOBJ(scene, "modelos/Puesto/","canopy-carnival-tent", "Puesto",0.2);
+	//CargarOBJSinTextura(scene, "modelos/Puesto/canopy-carnival-tent", "Puesto",0.2);
+
+
 	estantes.push(new Fila(sceneModelos, scene, { x: 0, y: 6, z: 0 }));
 	estantes.push(new Fila(sceneModelos, scene, { x: 0, y: 3, z: 0 }, "izq"));
 	estantes.push(new Fila(sceneModelos, scene, { x: 0, y: 0, z: 0 },));
@@ -66,20 +75,23 @@ var Render = function () {
 	requestAnimationFrame( Render );
 	delta = clock.getDelta();
 
-<<<<<<< HEAD
 	if(!pause){
 		estantes.forEach(it=>{ it.dibujar(delta, pelotas); });
-		pelotas.forEach(it => { it.dibujar(delta); });
-		renderer.render( scene, camera );
+		pelotas.forEach(it => 
+				{ 
+					it.dibujar(delta); 
+					if(it.position.z <= -2){
+						scene.remove(it);
+					}
+				});
+		if(acerto){
+			puntos += 10;
+			acerto = false;
+		}
 
+		$("#info").html("Puntos: "+ puntos + "<br> Oportunidades: " + oportunidades);
 	}
-=======
-	estantes.forEach(it=>{ it.dibujar(delta, pelotas); })
-	//Ya jala pero deberia hacerlo al mismo tiempo de que se mueven,
-	//PENDIENTE: agregarlo como metodo a fila
-
 	renderer.render( scene, camera );
->>>>>>> master
 };
 
 
@@ -126,6 +138,7 @@ window.addEventListener( 'resize', function () {
 }, false );
 
 window.addEventListener( 'click', function( event ) {
+	if(oportunidades <= 0) { return; }
 	var pos = new THREE.Vector3();
 	var quat = new THREE.Quaternion();
 	mouseCoords.set(
@@ -138,44 +151,37 @@ window.addEventListener( 'click', function( event ) {
 	//Lo convierte a conrdenadas de la scene
 	
 	pos.copy( raycaster.ray.direction );
-	console.clear();
-	//alert("x: " + pos.x + "y: " + pos.y + "z: " + pos.z);
-	console.log("Direccion: ");
-	console.log(raycaster.ray.direction);
-	console.log("Origen: ");
-	console.log( raycaster.ray.origin );
-
 	pos.add( raycaster.ray.origin );
-
-	console.log("Origen: ");
-	console.log( pos );
-	
 	quat.set( 0, 0, 0, 1 );
 
 	var p = _pelota.clone();
-	p.position.copy(pos);
-	p.quaternion.copy(quat);
+	p.position.copy(raycaster.ray.origin);
+	p.setRotationFromQuaternion(quat);
 	p.scale.x = p.scale.y = p.scale.z = 0.5;
 	//p.position.z =0;
 	p.rays = [
 		new THREE.Vector3(2,0,0),
-<<<<<<< HEAD
 		new THREE.Vector3(1,0,0),
 		new THREE.Vector3(0,0,1),
 		new THREE.Vector3(0,0,-3)
-=======
-		new THREE.Vector3(2,0,0),
-		new THREE.Vector3(0,0,2),
-		new THREE.Vector3(0,0,-2)
->>>>>>> master
 	];
-	p.direccion.copy(raycaster.ray.direction);
+	var o = raycaster.ray.origin;
+	var d = pos;
+
+
+	p.rotation.y = -(3.1416 + Math.atan2(d.x - o.x, d.z - o.z));
+	p.rotation.x = -Math.atan2(d.y - o.y, d.z - o.z);
+	//p.direccion.copy(raycaster.ray.direction);
+
+
+
 	pelotas.push(p);
 	scene.add(pelotas[pelotas.length - 1]);
 	if(pelotas.length >= 10){
 		scene.remove(pelotas[0]);
 		pelotas.shift();
 	}
+	oportunidades--;
 }, false);
 
 window.addEventListener('keydown', function(event) {
@@ -183,3 +189,7 @@ window.addEventListener('keydown', function(event) {
         pause = !pause;
     }
 });
+
+function ObtenerRotacion(origen, destino){
+
+}
