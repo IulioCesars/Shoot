@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Shoot</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/mifacebook.js"></script>
+</head>
+    <body id="page-top">
+        <header>
+            <div class="header-content">
+                <h1 id="puntuacion">Puntuación: </h1>
+                <button onclick="shareFB();">Compartir en Facebook</button>
+                <!-- Boton de Like y Share -->
+                <!--<div class="fb-like" data-share="true" data-width="450" data-show-faces="true"></div>-->
+            </div>
+        </header>     
+    </body>
+    <script type="text/javascript">
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+        };
+
+        var puntuacion = getUrlParameter("s");
+        function shareFB() {
+            shareScore(puntuacion);
+        }
+        $("#puntuacion").html("Puntuación: <b>" + puntuacion + "</b>");
+
+    </script>
+</html>

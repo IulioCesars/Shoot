@@ -95,7 +95,10 @@ class Fila{
                     // Si existe colision
                     var objColision = this.collision[0].object.parent;
                     //if(model.objetivo)
+                    if(objColision!=null){
                         this.scene.remove(objColision);
+                        acerto = true;
+                    }
                 }
             });
         });

@@ -138,7 +138,10 @@ window.addEventListener( 'resize', function () {
 }, false );
 
 window.addEventListener( 'click', function( event ) {
-	if(oportunidades <= 0) { return; }
+	if(oportunidades <= 0) { 
+		window.top.location.href = "puntuacion.html?s=" + puntos;
+		return; 
+	}
 	var pos = new THREE.Vector3();
 	var quat = new THREE.Quaternion();
 	mouseCoords.set(
@@ -189,7 +192,3 @@ window.addEventListener('keydown', function(event) {
         pause = !pause;
     }
 });
-
-function ObtenerRotacion(origen, destino){
-
-}
