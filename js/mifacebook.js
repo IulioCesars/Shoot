@@ -20,8 +20,7 @@ function shareScore(score) {
   
   FB.ui({
     method: 'feed', /* method: 'feed'  solo en el muro */
-    href: 'http://google.com', /* Aqui colocar la página del proyecto */
-    link: 'https://developers.facebook.com/docs/',
+    link: 'https://iuliocesars.github.io/Shoot/',
     quote: 'Mi puntuación: ' + score,
     picture: 'https://s3.envato.com/files/204256457/03_preview.jpg'
   });
