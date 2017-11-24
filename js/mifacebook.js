@@ -20,7 +20,7 @@ function shareScore(score) {
   
   FB.ui({
     method: 'feed', /* method: 'feed'  solo en el muro */
-    link: 'https://iuliocesars.github.io/Shoot/',
+    link: 'http://video.twicky.com.mx/Shoot/',
     quote: 'Mi puntuación: ' + score,
     picture: 'https://s3.envato.com/files/204256457/03_preview.jpg'
   });

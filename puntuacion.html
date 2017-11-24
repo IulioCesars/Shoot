@@ -9,6 +9,7 @@
     <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="css/style.css" rel="stylesheet">
     <script src="js/jquery.min.js"></script>
+    <script src="js/jsUtil.js"></script> 
     <script type="text/javascript" src="js/mifacebook.js"></script>
 </head>
     <body id="page-top">
@@ -41,7 +42,11 @@
         function shareFB() {
             shareScore(puntuacion);
         }
-        $("#puntuacion").html("Puntuación: <b>" + puntuacion + "</b>");
+        var usuario = localStorage.getItem("usuario");
+        if(usuario == null)
+            usuario = "Anonimo";
 
+        $("#puntuacion").html("Puntuación de " + usuario + ": <b>" + puntuacion + "</b>");
+        jsUtil.enviarPuntuacion(usuario, puntuacion);
     </script>
 </html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Shoot</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="js/jquery.min.js"></script>
+</head>
+    <body id="page-top">
+        <header>
+            <div class="header-content">
+                <div class="header-content-inner">
+                    <div class="container">
+                        <table id="tabla" class="table">
+                            <thead>
+                              <tr>
+                                <th>Usuario</th>
+                                <th>Puntuacion</th>
+                                <th>Fecha</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                              </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </header>     
+    </body>
+    <script type="text/javascript">
+        var dataToSend = { action: "obtenerPuntuacion" };
+            $.ajax({
+                url: "wsShoot.php",
+                async: true,
+                type: "POST",
+                data: dataToSend,
+                dataType: 'json',
+                success: function(response) {
+                    response.forEach(it=>{
+                        $('#tabla tr:last').after(`
+                                                <tr>
+                                                    <td>` + it.usuario + `</td>
+                                                    <td>` + it.puntuacion + `</td>
+                                                    <td>` + it.fecha + `</td>
+                                                </tr>
+                                                `);
+                    });
+                },
+                error: function(x, y, z){
+                    alert("Error: " + x + y + z);
+                }
+            });
+    </script>
+</html>

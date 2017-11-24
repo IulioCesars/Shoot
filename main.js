@@ -18,6 +18,8 @@ var puntos = 0;
 var pause = false;
 var acerto = false;
 
+var cuboTextura;
+var cuboMaterial;
 
 function IniciarGraficos(){
 	scene = new THREE.Scene();
@@ -39,12 +41,15 @@ function IniciarGraficos(){
 		lights[ 0 ] = new THREE.PointLight( 0xffffff, 1, 0 );
 		lights[ 1 ] = new THREE.PointLight( 0xffffff, 1, 0 );
 		lights[ 2 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+		lights[ 3 ] = new THREE.PointLight( 0xFF0000, 0.8, 0 );
 		lights[ 0 ].position.set( 0, 200, 0 );
 		lights[ 1 ].position.set( 100, 200, 100 );
 		lights[ 2 ].position.set( - 100, - 200, - 100 );
+		lights[ 3 ].position.set( 0, 0, 0 );
 	scene.add( lights[ 0 ] );
 	scene.add( lights[ 1 ] );
 	scene.add( lights[ 2 ] );
+	scene.add( lights[ 3 ] );
 
 	raycaster = new THREE.Raycaster();
 	mouseCoords = new THREE.Vector2();
@@ -66,9 +71,18 @@ function CargarEscenario(){
 	//CargarOBJSinTextura(scene, "modelos/Puesto/canopy-carnival-tent", "Puesto",0.2);
 
 
-	estantes.push(new Fila(sceneModelos, scene, { x: 0, y: 6, z: 0 }));
-	estantes.push(new Fila(sceneModelos, scene, { x: 0, y: 3, z: 0 }, "izq"));
-	estantes.push(new Fila(sceneModelos, scene, { x: 0, y: 0, z: 0 },));
+	estantes.push(new Fila(sceneModelos, scene, { x: 0, y: 7, z: 0 }));
+	estantes.push(new Fila(sceneModelos, scene, { x: 0, y: 4, z: 0 }, "izq"));
+	estantes.push(new Fila(sceneModelos, scene, { x: 0, y: 1, z: 0 },));
+
+	var cuboTextura = new THREE.ImageUtils.loadTexture("img/madera.jpg");
+	var cuboMaterial = new THREE.MeshBasicMaterial({ map:cuboTextura, side:THREE.DoubleSide });
+
+	dibujarMuroY(0, cuboMaterial);
+	dibujarMuroY(10, cuboMaterial);
+	dibujarMuroX(-10, cuboMaterial);
+	dibujarMuroX(10, cuboMaterial);
+	dibujarMuroZ(-2, cuboMaterial);
 }
 
 var Render = function () {
@@ -80,12 +94,12 @@ var Render = function () {
 		pelotas.forEach(it => 
 				{ 
 					it.dibujar(delta); 
-					if(it.position.z <= -2){
+					if(it.position.z <= -1){
 						scene.remove(it);
 					}
 				});
 		if(acerto){
-			puntos += 10;
+			//puntos += 10;
 			acerto = false;
 		}
 
@@ -94,6 +108,33 @@ var Render = function () {
 	renderer.render( scene, camera );
 };
 
+
+function dibujarMuroY(y, material){
+    var geometry = new THREE.BoxGeometry( 20, 0.2, 10 );
+    var cube = new THREE.Mesh( geometry, material );
+    cube.castShadow = true;
+    cube.receiveShadow = false;
+    cube.position.y = y;
+    this.scene.add( cube );
+}
+
+function dibujarMuroX(x,material){
+    var geometry = new THREE.BoxGeometry( 0.2, 20, 10 );
+    var cube = new THREE.Mesh( geometry, material );
+    cube.castShadow = true;
+    cube.receiveShadow = false;
+    cube.position.x = x;
+    this.scene.add( cube );
+}
+
+function dibujarMuroZ(z,material){
+    var geometry = new THREE.BoxGeometry( 20, 20, 0.2 );
+    var cube = new THREE.Mesh( geometry, material );
+    cube.castShadow = true;
+    cube.receiveShadow = false;
+    cube.position.z = z;
+    this.scene.add( cube );
+}
 
 function CargarOBJ(scene, path, obj, name, scale = 1){
     this.mtlLoader = new THREE.MTLLoader();

@@ -14,6 +14,9 @@
     <body id="page-top">
         <header>
             <div class="header-content">
+                <p style="color: black;" ><b>Nombre de jugador: </b>   </p>
+                <input type="text" id="txtUsuario" value="Anonimo" />
+                <hr>
                 <div class="header-content-inner">
                     <img id="btnJugar" class="img-svg" src="img/Jugar.svg" alt="Jugar">
                     <hr>
@@ -26,6 +29,11 @@
     <script type="text/javascript">
         $("#btnJugar").click(()=>{
             window.location.href = "game.html";
+            var usuario = $("#txtUsuario").val();
+            localStorage.setItem("usuario", usuario);
+        });
+        $("#btnPuntuaciones").click(()=>{
+            window.location.href = "tablapuntuaciones.html";
         });
     </script>
 </html>

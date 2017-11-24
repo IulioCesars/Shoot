@@ -14,7 +14,7 @@ class Pelota extends THREE.Mesh{
 
   dibujar(delta){
     //this.position.z -= (8 * delta);
-    this.translateZ(8 * delta);
+    this.translateZ(15 * delta);
     //if(this.position.x > this.direccion.x){
       //this.position.x -= (8 * delta);
     //  }

@@ -21,12 +21,14 @@ class Fila{
 
     dibujarBarra(){
         var geometry = new THREE.BoxGeometry( 20, 0.2, 1 );
-        var material = new THREE.MeshPhongMaterial( {
+        var cuboTextura = new THREE.ImageUtils.loadTexture("img/madera.jpg");
+        var cuboMaterial = new THREE.MeshBasicMaterial({ map:cuboTextura, side:THREE.DoubleSide });
+        /*var material = new THREE.MeshPhongMaterial( {
                   color: 0x663300,
                   emissive: 0x072534,
                   side: THREE.DoubleSide
-                });
-        var cube = new THREE.Mesh( geometry, material );
+                });*/
+        var cube = new THREE.Mesh( geometry, cuboMaterial );
         cube.castShadow = true;
         cube.receiveShadow = false;
         cube.position.y = this.posicion.y;
@@ -95,25 +97,49 @@ class Fila{
                     // Si existe colision
                     var objColision = this.collision[0].object.parent;
                     //if(model.objetivo)
-                    if(objColision!=null){
+                    if(objColision!=null && objColision.position.z == 0 && pelota.position.z <= 0 && pelota.position.z > -0.5){
+                        this.switchModelos(objColision.name);
                         this.scene.remove(objColision);
-                        acerto = true;
+                        pelota.position.z = -0.6;
+
                     }
                 }
             });
         });
     }
 
+    switchModelos(c){
+        switch(c){
+            case "Pato": { 
+                    puntos += 10;
+                break;}
+            case "Gato": {
+                    if(oportunidades!=0) 
+                        oportunidades--;
+                break;}
+            case "Caja": { 
+                    oportunidades++;
+                break;}
+            case "Pollo": { 
+                    puntos = 0;
+                break;}
+
+        }
+
+    }
+
     obtenerModelo(i = 0){
         var nombreModelo;
         if(i == 0)
-            i = this.obtenerNumeroAleatorio(0,4);
+            i = this.obtenerNumeroAleatorio(0,6);
         switch(i){
             case 0: { return null; break; }
             case 1: { nombreModelo = "Pato"; break; }
             case 2: { nombreModelo = "Gato"; break; }
             case 3: { nombreModelo = "Caja"; break; }
-            case 4: { nombreModelo = "Pollo"; break; }
+            case 4: { nombreModelo = "Pato"; break; }
+            case 5: { nombreModelo = "Pato"; break; }
+            case 6: { nombreModelo = "Pollo"; break; }
         }
         var model  = this.sceneModelos.getObjectByName(nombreModelo);
         //model.objetivo = 1;
