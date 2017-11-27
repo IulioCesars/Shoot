@@ -10,12 +10,24 @@
     <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="css/style.css" rel="stylesheet">
     <script src="js/jquery.min.js"></script>
+    <script src="js/filtros.js"></script>
 </head>
     <body id="page-top">
         <header>
+            <canvas id="fondo"></canvas>
             <div class="header-content">
-                <p style="color: black;" ><b>Nombre de jugador: </b>   </p>
-                <input type="text" id="txtUsuario" value="Anonimo" />
+                <div>
+                    <p><b>Nombre de jugador: </b>   </p>
+                    <input type="text" id="txtUsuario" value="Anonimo" />
+                    <p><b>Tema: </b></p>
+                    <select id="cbTema" >
+                        <option value="">Normal</option>
+                        <option value="bw">Blanco y Negro</option>
+                        <option value="invert">Invertido</option>
+                        <option value="sepia">Sepia</option>
+                        <option value="contrast">Contraste</option>
+                    </select>
+                </div>
                 <hr>
                 <div class="header-content-inner">
                     <img id="btnJugar" class="img-svg" src="img/Jugar.svg" alt="Jugar">
@@ -35,5 +47,19 @@
         $("#btnPuntuaciones").click(()=>{
             window.location.href = "tablapuntuaciones.html";
         });
+        
+        filtros.definirFondo("fondo");
+
+        $( "#cbTema" ).change(function() {
+            var tema = $( "#cbTema" ).val();
+            localStorage.setItem("tema", tema);
+            filtros.definirFondo("fondo");
+        });
+
+        var temaGuardado = localStorage.getItem("tema");
+        if(temaGuardado != null){
+            $("#cbTema").val(temaGuardado);
+        }
+
     </script>
 </html>

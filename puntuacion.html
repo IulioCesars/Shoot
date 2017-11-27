@@ -10,10 +10,12 @@
     <link href="css/style.css" rel="stylesheet">
     <script src="js/jquery.min.js"></script>
     <script src="js/jsUtil.js"></script> 
+    <script src="js/filtros.js"></script>
     <script type="text/javascript" src="js/mifacebook.js"></script>
 </head>
     <body id="page-top">
         <header>
+            <canvas id="fondo"></canvas>
             <div class="header-content">
                 <h1 id="puntuacion">Puntuación: </h1>
                 <button onclick="shareFB();">Compartir en Facebook</button>
@@ -48,5 +50,6 @@
 
         $("#puntuacion").html("Puntuación de " + usuario + ": <b>" + puntuacion + "</b>");
         jsUtil.enviarPuntuacion(usuario, puntuacion);
+        filtros.definirFondo("fondo");
     </script>
 </html>

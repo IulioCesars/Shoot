@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+ <script src="js/filtros.js"></script>
+</he
+<html>
+    <head>
+        <title>Testing canvas</title>
+        <style>
+            body {
+                background: #333;
+            }
+            #main {
+                margin-top: 100px;
+                text-align: center;
+            }
+            #canvas {
+                background-color: #000;
+                height: 600px;
+                width: 800px;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <div id="main">
+            <canvas id="canvas" width="800" height="600">
+                <h1>sadas</h1>
+            </canvas>
+
+        </div>
+ 
+        <script>
+            filtros.definirCanvas("canvas")
+            filtros.cargarImagen("fondo.jpg", "sepia");
+        </script>
+    </body>
+</html>

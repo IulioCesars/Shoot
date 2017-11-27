@@ -20,7 +20,7 @@ var acerto = false;
 
 var cuboTextura;
 var cuboMaterial;
-
+var uniforms1;
 function IniciarGraficos(){
 	scene = new THREE.Scene();
 	sceneModelos = new THREE.Scene();
@@ -53,6 +53,9 @@ function IniciarGraficos(){
 
 	raycaster = new THREE.Raycaster();
 	mouseCoords = new THREE.Vector2();
+	uniforms1 = {
+          time: { value: 1.0 }
+        };
 }
 
 function CargarEscenario(){

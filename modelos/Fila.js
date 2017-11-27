@@ -118,7 +118,7 @@ class Fila{
                         oportunidades--;
                 break;}
             case "Caja": { 
-                    oportunidades++;
+                    oportunidades+=3;
                 break;}
             case "Pollo": { 
                     puntos = 0;

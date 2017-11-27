@@ -10,14 +10,16 @@
     <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="css/style.css" rel="stylesheet">
     <script src="js/jquery.min.js"></script>
+    <script src="js/filtros.js"></script>
 </head>
     <body id="page-top">
         <header>
+            <canvas id="fondo"></canvas>
             <div class="header-content">
                 <div class="header-content-inner">
                     <div class="container">
-                        <table id="tabla" class="table">
-                            <thead>
+                        <table id="tabla" class="table table-striped">
+                            <thead class="thead-inverse">
                               <tr>
                                 <th>Usuario</th>
                                 <th>Puntuacion</th>
@@ -45,7 +47,7 @@
                 success: function(response) {
                     response.forEach(it=>{
                         $('#tabla tr:last').after(`
-                                                <tr>
+                                                <tr class="active">
                                                     <td>` + it.usuario + `</td>
                                                     <td>` + it.puntuacion + `</td>
                                                     <td>` + it.fecha + `</td>
@@ -57,5 +59,6 @@
                     alert("Error: " + x + y + z);
                 }
             });
+        filtros.definirFondo("fondo");
     </script>
 </html>
